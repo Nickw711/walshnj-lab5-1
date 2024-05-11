@@ -1,22 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Database Table</title>
+    <title>Matching Game</title>
 </head>
 <body>
-    <h1>Database Table Contents</h1>
+    <h2>Matching Game</h2>
+    <h3>(Mixed Up Name & Number Combinations Below</h3>
     <table border="1">
         <tr>
-            <th>ID</th>
-            <th>Data</th>
+            <th>Name</th>
+            <th>Number</th>
         </tr>
-        {% for row in rows %}
-        <tr>
-            <td>{{ row[0] }}</td>
-            <td>{{ row[1] }}</td>
-        </tr>
+        {% for name, number in zip(names, numbers) %}
+            <tr>
+                <td>{{ name }}</td>
+                <td>{{ number }}</td>
+            </tr>
         {% endfor %}
     </table>
+    <h2>Guess The Correct Name to The Corresponding Number</h2>
+    <form method="POST" action="/check-guess">
+        <label for="guess_name">Name:</label><br>
+        <input type="text" id="guess_name" name="guess_name" required><br>
+        <label for="guess_number">Number:</label><br>
+        <input type="text" id="guess_number" name="guess_number" required><br><br>
+        <input type="submit" value="Submit Guess">
+    </form>
+    <p>{{ message }}</p>
 </body>
 </html>
