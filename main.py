@@ -108,6 +108,20 @@ def matching_game():
     zipped_data = zip(shuffled_names, shuffled_numbers)
     return render_template('index.html', data=zipped_data)
 
+@app.route('/check-guess', methods=['POST'])
+def check_guess():
+    guess_name = request.form.get('guess_name')
+    guess_number = request.form.get('guess_number')
+
+    db = get_db()
+    data = db.execute('SELECT * FROM contacts WHERE name = ? AND phone = ?', (guess_name, guess_number)).fetchone()
+
+    if data:
+        message = 'Your guess is correct!'
+    else:
+        message = 'Your guess is incorrect. Please try again.'
+
+    return render_template('guess_result.html', message=message)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
