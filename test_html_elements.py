@@ -1,9 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import unittest
-import time
 
 class TestContacts(unittest.TestCase):
     def setUp(self):
@@ -17,14 +17,15 @@ class TestContacts(unittest.TestCase):
     def test_contacts(self):
         driver = self.driver
         driver.get("http://10.48.10.184")  # Replace with your target website
-        
-        # Wait for the page to fully load
-        time.sleep(5)  # Adjust the sleep time as needed
+
+        # Wait for the page to load
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
         
         # Check for the presence of all 10 test contacts
         for i in range(10):
             test_name = f'Test Name {i}'
-            assert test_name in driver.page_source, f"Test contact {test_name} not found in page source"
+            contact_element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{test_name}')]")))
+            assert contact_element.is_displayed(), f"Test contact {test_name} not found or not visible on the page"
             print(f"Test contact {test_name} found.")
         print("Test completed successfully. All 10 test contacts were verified.")
 
