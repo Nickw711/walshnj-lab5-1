@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options
 import unittest
+import time
 
 class TestContacts(unittest.TestCase):
     def setUp(self):
@@ -17,10 +18,14 @@ class TestContacts(unittest.TestCase):
         driver = self.driver
         driver.get("http://10.48.10.184")  # Replace with your target website
         
+        # Wait for the page to fully load
+        time.sleep(5)  # Adjust the sleep time as needed
+        
         # Check for the presence of all 10 test contacts
         for i in range(10):
             test_name = f'Test Name {i}'
             assert test_name in driver.page_source, f"Test contact {test_name} not found in page source"
+            print(f"Test contact {test_name} found.")
         print("Test completed successfully. All 10 test contacts were verified.")
 
     def tearDown(self):
