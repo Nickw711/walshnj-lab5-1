@@ -1,12 +1,11 @@
-from flask import Flask, request, render_template_string, redirect, url_for, render_template
+from flask import Flask, request, render_template_string, redirect, url_for
 import sqlite3
 import os
-from random import shuffle
 
 app = Flask(__name__)
 
 # Database file path
-DATABASE = 'demo.db'
+DATABASE = '/nfs/demo.db'
 
 def get_db():
     db = sqlite3.connect(DATABASE)
@@ -106,17 +105,6 @@ def matching_game():
     shuffle(shuffled_names)
     shuffle(shuffled_numbers)
     return render_template('index.html', names=shuffled_names, numbers=shuffled_numbers)
-
-@app.route('/check-guess', methods=['POST'])
-def check_guess():
-    guess_name = request.form['guess_name']
-    guess_number = request.form['guess_number']
-    db = get_db()
-    contacts = db.execute('SELECT * FROM contacts').fetchall()
-    for contact in contacts:
-        if contact['name'] == guess_name and contact['phone'] == guess_number:
-            return render_template('index.html', message='You guessed correctly!')
-    return render_template('index.html', message='Your guess is incorrect.')
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
