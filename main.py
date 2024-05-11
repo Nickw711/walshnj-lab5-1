@@ -105,7 +105,9 @@ def matching_game():
     shuffled_numbers = [contact['phone'] for contact in data]
     shuffle(shuffled_names)
     shuffle(shuffled_numbers)
-    return render_template('index.html', names=shuffled_names, numbers=shuffled_numbers)
+    zipped_data = zip(shuffled_names, shuffled_numbers)
+    return render_template('index.html', data=zipped_data)
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
